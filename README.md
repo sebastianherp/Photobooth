@@ -1,7 +1,7 @@
-# Photobooth
-Raspberry Pi Photobooth Skript
+# Raspberry Pi Photobooth Skript
 
-# Vorbereitungen
+
+## Vorbereitungen
 Damit das Python Skript auf einem Raspberry Pi so läuft wie gedacht sind folgende Schritte auszuführen
  - Raspbian in einer aktuellen Version auf einer Micro-SD-Karte installieren: [Link zur Anleitung](https://www.raspberrypi.org/documentation/installation/installing-images/README.md)
  - HDMI muss als default Videoausgabe angegeben sein. Dazu folgendes in `/boot/config.txt` ändern:
@@ -14,7 +14,7 @@ hdmi_drive=2
  - Der Fußtaster wird mittels Adapter (Klinkenbuchse auf Pfostenstecker) am Raspberry Pi angeschlossen. Dabei muss die Klinkenspitze mit GPIO 21, die Mitte mit GPIO 20 und die Basis mit GND verbunden sein. Interne Pull-Ups sorgen dafür, dass der Taster als Interrupt auslösender Schalter funktioniert. Die Belegung entspricht der von Canon Auslösern verwendeten [Link](http://www.doc-diy.net/photo/eos_wired_remote/)
  - Boot Cron Eintrag
 
-# Konfiguration
+## Konfiguration
 ```
 color_background = (0, 255, 0)
 color_foreground = (0, 0, 0)
