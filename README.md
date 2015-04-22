@@ -16,8 +16,8 @@ hdmi_drive=2
 
 # Konfiguration
 ```
-color_background = (0, 0, 0)
-color_foreground = (0, 255, 0)
+color_background = (0, 255, 0)
+color_foreground = (0, 0, 0)
 seconds_countdown = 3
 seconds_show_picture_no_interrupt = 3
 seconds_show_picture_total = 10
@@ -26,4 +26,7 @@ path_photos = 'fotos'
 gpio_shutter = 21
 gpio_focus = 20
 ```
+
+# Tipps
+ - Defaultuser ist `pi` mit Passwort `raspberry`. Es empfiehlt sich das Passwort mit dem Kommand `passwd` oder mit `raspi-config` (sudo nicht vergessen) zu ändern!
 
