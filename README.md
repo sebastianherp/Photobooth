@@ -27,6 +27,15 @@ gpio_shutter = 21
 gpio_focus = 20
 ```
 
-# Tipps
+## Tipps
  - Defaultuser ist `pi` mit Passwort `raspberry`. Es empfiehlt sich das Passwort mit dem Kommand `passwd` oder mit `raspi-config` (sudo nicht vergessen) zu ändern!
+ - Damit man testweise auch ein Bild mit einer USB Webcam aufnehmen kann muss *fswebcam* mit folgenden Kommandos installiert werden:
+```
+sudo apt-get update
+sudo apt-get install fswebcam
+```
+   Im Skript `takepicture.sh` dann die entsprechenden Zeilen vom Kommentarzeichen befreien.
+ - Konfiguration der Fotoaufnahme Parameter ebenfalls im Skript `takepicture.sh`
 
+
+Copyright Sebastian Herp
