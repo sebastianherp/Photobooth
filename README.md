@@ -50,4 +50,50 @@ guest ok = no
  - `sudo smbpasswd -a pi` um einen Sambanutzer anzulegen (ohne "-a" um das Passwort zu ändern)
  - `sudo /etc/init.d/samba restart` startet Samba neu
 
+## Gphoto
+ - `sudo apt-get install gphoto2`
+ 
+## Wifi AP
+ - `sudo apt-get install hostapd dnsmasq`
+ - `sudo nano /etc/default/hostapd` und dann `DAEMON_CONF="/etc/hostapd/hostapd.conf"` dort einsetzen
+ - `sudo nano /etc/hostapd/hostapd.conf`:
+```
+# Genutztes Interface, muss bei Bedarf geändert werden (siehe "ifconfig"-Ausgabe)
+interface=wlan0
+# Realtek-Treiber, muss bei anderem Hersteller angepasst werden
+driver=rtl871xdrv
+
+# Deamon-Einstellungen
+ctrl_interface=/var/run/hostapd
+ctrl_interface_group=0
+
+# WLAN-Konfiguration
+ssid=Photobooth
+channel=1
+hw_mode=g
+ieee80211n=1
+
+# WLAN-Sicherheit (Passwort unbedingt anpassen!)
+wpa=2
+wpa_passphrase=photobooth
+wpa_key_mgmt=WPA-PSK
+wpa_pairwise=CCMP
+rsn_pairwise=CCMP
+
+# Ländercode
+country_code=DE
+```
+ - `sudo nano /etc/dnsmasq.conf` folgende Einstellungen machen: `interface=wlan0` und `dhcp-range=192.168.99.50,192.168.99.200,255.255.255.0,12h`
+ - `sudo nano /etc/network/interfaces`:
+```
+iface wlan0 inet static
+address 192.168.99.1
+netmask 255.255.255.0
+```
+ - Neustart der Dienste:
+```
+sudo service hostapd restart  
+sudo service dnsmasq restart
+```
+
 Copyright Sebastian Herp
