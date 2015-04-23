@@ -55,7 +55,6 @@ guest ok = no
  
 ## Wifi AP
  - `sudo apt-get install hostapd dnsmasq`
- - `sudo nano /etc/default/hostapd` und dann `DAEMON_CONF="/etc/hostapd/hostapd.conf"` dort einsetzen
  - `sudo nano /etc/hostapd/hostapd.conf`:
 ```
 # Genutztes Interface, muss bei Bedarf geändert werden (siehe "ifconfig"-Ausgabe)
@@ -83,12 +82,17 @@ rsn_pairwise=CCMP
 # Ländercode
 country_code=DE
 ```
- - `sudo nano /etc/dnsmasq.conf` folgende Einstellungen machen: `interface=wlan0` und `dhcp-range=192.168.99.50,192.168.99.200,255.255.255.0,12h`
+ - `sudo nano /etc/dnsmasq.conf` folgende Einstellungen machen: `interface=wlan0` und `dhcp-range=192.168.99.50,192.168.99.200,255.255.255.0,12h`, dazu `address=/photobooth.de/192.168.99.1` oder `address=/#/192.168.99.1` wenn alle Domains auf den lokalen Webserver umgebogen werden sollen.
  - `sudo nano /etc/network/interfaces`:
 ```
+# Wifi AP
+#auto wlan0
 iface wlan0 inet static
 address 192.168.99.1
 netmask 255.255.255.0
+broadcast 192.168.0.255
+up hostapd /etc/hostapd/hostapd.conf
+
 ```
  - Neustart der Dienste:
 ```
