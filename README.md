@@ -38,4 +38,16 @@ sudo apt-get install fswebcam
  - Konfiguration der Fotoaufnahme Parameter ebenfalls im Skript `takepicture.sh`
 
 
+## Samba einrichten
+ - Installieren mit `sudo apt-get install samba samba-common-bin`
+ - Mit `sudo nano /etc/samba/smb.conf` die Konfiguration editieren. Dort `security = user` eintragen und folgendes hinten anhängen:
+```
+[Photobooth]
+path = /home/pi/photobooth/html
+writeable = yes
+guest ok = no
+```
+ - `sudo smbpasswd -a pi` um einen Sambanutzer anzulegen (ohne "-a" um das Passwort zu ändern)
+ - `sudo /etc/init.d/samba restart` startet Samba neu
+
 Copyright Sebastian Herp
