@@ -61,7 +61,7 @@ guest ok = no
 # Genutztes Interface, muss bei Bedarf geändert werden (siehe "ifconfig"-Ausgabe)
 interface=wlan0
 # Realtek-Treiber, muss bei anderem Hersteller angepasst werden
-driver=rtl871xdrv
+driver=nl80211
 
 # Deamon-Einstellungen
 ctrl_interface=/var/run/hostapd
@@ -95,5 +95,16 @@ netmask 255.255.255.0
 sudo service hostapd restart  
 sudo service dnsmasq restart
 ```
+
+## Internetweiterleitung
+ - `sudo nano /etc/sysctl.conf` und `net.ipv4.ip_forward=1` auskommentieren
+ - danach mit `sudo sysctl -p` neu laden
+ - mit `sudo nano /etc/network/if-up.d/accesspoint` Datei neu anlegen und mit folgendem Inhalt befüllen:
+```
+#!/bin/sh
+iptables --table nat --append POSTROUTING --out-interface eth0 -j MASQUERADE  
+iptables --append FORWARD --in-interface wlan0 -j ACCEPT  
+```
+ - `sudo chmod +x /etc/network/if-up.d/accesspoint` um Datei ausführbar zu machen
 
 Copyright Sebastian Herp
