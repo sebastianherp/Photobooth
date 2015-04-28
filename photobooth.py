@@ -23,7 +23,7 @@ seconds_show_picture_no_interrupt = 3
 seconds_show_picture_total = 10
 text_anleitung = 'Der Fuﬂtaster startet\nden Countdown\n\nBitte l‰cheln! :)'
 photo_keep_aspect_ratio = True
-photo_border = 40
+photo_border = 20
 photo_background = (255, 0, 0)
 path_photos = 'html/fotos/'	# "/" am Ende nicht vergessen
 gpio_shutter = 21
@@ -86,15 +86,19 @@ try:
 	    state = 2
 
 	elif (state == 2):	# Bild aufnehmen und anzeigen
-	    # clear screen
-	    booth.clear( (0, 0, 0) )
-	    filename = path_photos + "pb" + time.strftime("%Y%m%d-%H%M%S") + ".jpg"
-	    # USB Webcam (zum testen)
-	    call(["./takepicture.sh", filename, "usb"])
-	    # Camera	
-	    #call(["./takepicture.sh", filename, "camera"])
+	    try:
+		# clear screen
+	    	booth.clear( (0, 0, 0) )
+	    	filename = path_photos + "pb" + time.strftime("%Y%m%d-%H%M%S") + ".jpg"
+	    	# USB Webcam (zum testen)
+	    	#call(["./takepicture.sh", filename, "usb"])
+	    	# Camera	
+	    	call(["./takepicture.sh", filename, "camera"])
+	    	booth.display_image(filename, flip_horizontally, flip_vertically, photo_border, photo_background, photo_keep_aspect_ratio)
+	    except:
+		print "Fehler beim Bildaufnehmen"
 
-	    booth.display_image(filename, flip_horizontally, flip_vertically, photo_border, photo_background, photo_keep_aspect_ratio)
+
 	    time.sleep(seconds_show_picture_no_interrupt)
 	    seconds_rest = seconds_show_picture_total - seconds_show_picture_no_interrupt
 	    state = 3

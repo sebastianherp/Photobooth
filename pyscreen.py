@@ -45,6 +45,8 @@ class pyscreen :
 	pygame.mixer.init()
         # Render the screen
         pygame.display.update()
+	# Hide mouse cursor
+	pygame.mouse.set_visible(False)
 
     def __del__(self):
         "Destructor to make sure pygame shuts down, etc."
