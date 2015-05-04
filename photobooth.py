@@ -108,23 +108,23 @@ try:
 				time.sleep(frameTime)
 			
 			while p.poll() is None:
-				pass()
+				pass
 				
 			booth.display_image(filename, flip_horizontally, flip_vertically, photo_border, photo_background, photo_keep_aspect_ratio)
 		except:
 			print "Fehler beim Bildaufnehmen"
 
 
-	    time.sleep(seconds_show_picture_no_interrupt)
-	    seconds_rest = seconds_show_picture_total - seconds_show_picture_no_interrupt
-	    state = 3
+		time.sleep(seconds_show_picture_no_interrupt)
+		seconds_rest = seconds_show_picture_total - seconds_show_picture_no_interrupt
+		state = 3
 
 	elif (state == 3):	# stiller Countdown
-	    if seconds_rest > 0:
-		time.sleep(1)
-		seconds_rest = seconds_rest - 1
-	    else:
-		state = 0
+		if seconds_rest > 0:
+			time.sleep(1)
+			seconds_rest = seconds_rest - 1
+		else:
+			state = 0
 	
 		
 except KeyboardInterrupt:
