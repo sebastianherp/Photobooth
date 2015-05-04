@@ -87,14 +87,14 @@ try:
 	    state = 2
 
 	elif (state == 2):	# Bild aufnehmen und anzeigen
-	    try:
+		try:
 		# clear screen
-	    	booth.clear( (0, 0, 0) )
-	    	filename = path_photos + "pb" + time.strftime("%Y%m%d-%H%M%S") + ".jpg"
-	    	# USB Webcam (zum testen)
-	    	#call(["./takepicture.sh", filename, "usb"])
-	    	# Camera	
-	    	#call(["./takepicture.sh", filename, "camera"])
+			booth.clear( (0, 0, 0) )
+			filename = path_photos + "pb" + time.strftime("%Y%m%d-%H%M%S") + ".jpg"
+			# USB Webcam (zum testen)
+			#call(["./takepicture.sh", filename, "usb"])
+			# Camera	
+			#call(["./takepicture.sh", filename, "camera"])
 			
 			p = subprocess.Popen("./takepicture.sh", filename, "camera"])
 			time.sleep(1)
@@ -102,7 +102,7 @@ try:
 			frameTime = 0.1
 			incValue = 255 / (2 / frameTime)
 			# 2 Sekunden durch 0.1 wären 20 Frames, d.h. bei 255 Abstufungen 12.75 Stufen pro Frame höher gehen
-	    	while p.poll() is None and brightness <= 255:
+			while p.poll() is None and brightness <= 255:
 				booth.clear( (brightness, brightness, brightness) )
 				brightness = brightness + incValue
 				time.sleep(frameTime)
@@ -111,8 +111,8 @@ try:
 				pass()
 				
 			booth.display_image(filename, flip_horizontally, flip_vertically, photo_border, photo_background, photo_keep_aspect_ratio)
-	    except:
-		print "Fehler beim Bildaufnehmen"
+		except:
+			print "Fehler beim Bildaufnehmen"
 
 
 	    time.sleep(seconds_show_picture_no_interrupt)
