@@ -96,7 +96,7 @@ try:
 			# Camera	
 			#call(["./takepicture.sh", filename, "camera"])
 			
-			p = subprocess.Popen("./takepicture.sh", filename, "camera"])
+			p = subprocess.Popen(["./takepicture.sh", filename, "camera"])
 			time.sleep(1)
 			brightness = 0;
 			frameTime = 0.1
