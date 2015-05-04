@@ -8,6 +8,7 @@ import pyserver
 from subprocess import call
 import SocketServer
 import threading
+import subprocess
 
 GPIO.setmode(GPIO.BCM)
 
@@ -93,8 +94,23 @@ try:
 	    	# USB Webcam (zum testen)
 	    	#call(["./takepicture.sh", filename, "usb"])
 	    	# Camera	
-	    	call(["./takepicture.sh", filename, "camera"])
-	    	booth.display_image(filename, flip_horizontally, flip_vertically, photo_border, photo_background, photo_keep_aspect_ratio)
+	    	#call(["./takepicture.sh", filename, "camera"])
+			
+			p = subprocess.Popen("./takepicture.sh", filename, "camera"])
+			time.sleep(1)
+			brightness = 0;
+			frameTime = 0.1
+			incValue = 255 / (2 / frameTime)
+			# 2 Sekunden durch 0.1 wären 20 Frames, d.h. bei 255 Abstufungen 12.75 Stufen pro Frame höher gehen
+	    	while p.poll() is None and brightness <= 255:
+				booth.clear( (brightness, brightness, brightness) )
+				brightness = brightness + incValue
+				time.sleep(frameTime)
+			
+			while p.poll() is None:
+				pass()
+				
+			booth.display_image(filename, flip_horizontally, flip_vertically, photo_border, photo_background, photo_keep_aspect_ratio)
 	    except:
 		print "Fehler beim Bildaufnehmen"
 
