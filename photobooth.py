@@ -42,13 +42,13 @@ GPIO.setup(gpio_focus, GPIO.IN, pull_up_down=GPIO.PUD_UP)
 GPIO.setup(gpio_shutter, GPIO.IN, pull_up_down=GPIO.PUD_UP)
 
 def callback_shutter(channel):
-    global state
-    if (state == 0 or state == 3):
-	state = 1
-    #print "Fußtaster (Shutter) ausgelöst\n"
+	global state
+	if (state == 0 or state == 3):
+		state = 1
+	#print "Fußtaster (Shutter) ausgelöst\n"
 
 #def callback_focus(channel):
-#    print "Fußtaster (Focus) ausgelöst\n"
+#	print "Fußtaster (Focus) ausgelöst\n"
 
 
 print "Bitte den Fußtaster an Klinkenbuchse anschließen!\n"
@@ -68,68 +68,68 @@ booth = pyscreen.pyscreen()
 seconds_rest = 0
 
 try:
-    while True:
-	if (state == 0):	# zeige Anleitung
-	    booth.display_text(text_anleitung, flip_horizontally, flip_vertically, 10, color_foreground, color_background)
-	    time.sleep(1)
-
-	elif (state == 1):	# zeige Countdown
-	    if play_sound:
-		booth.load_sound(path_sound)
-
-	    for i in range(seconds_countdown, 0, -1):
-		if play_sound:
-		    booth.play_sound()
-		booth.display_text('%d' % i, flip_horizontally, flip_vertically, 1, color_foreground, color_background)
-		time.sleep(1)
-	    
-	    booth.display_text('0', flip_horizontally, flip_vertically, 1, color_foreground, color_background)
-	    state = 2
-
-	elif (state == 2):	# Bild aufnehmen und anzeigen
-		try:
-		# clear screen
-			booth.clear( (0, 0, 0) )
-			filename = path_photos + "pb" + time.strftime("%Y%m%d-%H%M%S") + ".jpg"
-			# USB Webcam (zum testen)
-			#call(["./takepicture.sh", filename, "usb"])
-			# Camera	
-			#call(["./takepicture.sh", filename, "camera"])
-			
-			p = subprocess.Popen(["./takepicture.sh", filename, "camera"])
+	while True:
+		if (state == 0):	# zeige Anleitung
+			booth.display_text(text_anleitung, flip_horizontally, flip_vertically, 10, color_foreground, color_background)
 			time.sleep(1)
-			brightness = 0;
-			frameTime = 0.1
-			incValue = 255 / (2 / frameTime)
-			# 2 Sekunden durch 0.1 wären 20 Frames, d.h. bei 255 Abstufungen 12.75 Stufen pro Frame höher gehen
-			while p.poll() is None and brightness <= 255:
-				booth.clear( (brightness, brightness, brightness) )
-				brightness = brightness + incValue
-				time.sleep(frameTime)
+
+		elif (state == 1):	# zeige Countdown
+			if play_sound:
+				booth.load_sound(path_sound)
+
+			for i in range(seconds_countdown, 0, -1):
+				if play_sound:
+					booth.play_sound()
+				booth.display_text('%d' % i, flip_horizontally, flip_vertically, 1, color_foreground, color_background)
+				time.sleep(1)
 			
-			while p.poll() is None:
-				pass
+			booth.display_text('0', flip_horizontally, flip_vertically, 1, color_foreground, color_background)
+			state = 2
+
+		elif (state == 2):	# Bild aufnehmen und anzeigen
+			try:
+				# clear screen
+				booth.clear( (0, 0, 0) )
+				filename = path_photos + "pb" + time.strftime("%Y%m%d-%H%M%S") + ".jpg"
+				# USB Webcam (zum testen)
+				#call(["./takepicture.sh", filename, "usb"])
+				# Camera	
+				#call(["./takepicture.sh", filename, "camera"])
 				
-			booth.display_image(filename, flip_horizontally, flip_vertically, photo_border, photo_background, photo_keep_aspect_ratio)
-		except:
-			print "Fehler beim Bildaufnehmen"
+				p = subprocess.Popen(["./takepicture.sh", filename, "camera"])
+				time.sleep(1)
+				brightness = 0;
+				frameTime = 0.1
+				incValue = 255 / (2 / frameTime)
+				# 2 Sekunden durch 0.1 wären 20 Frames, d.h. bei 255 Abstufungen 12.75 Stufen pro Frame höher gehen
+				while p.poll() is None and brightness <= 255:
+					booth.clear( (brightness, brightness, brightness) )
+					brightness = brightness + incValue
+					time.sleep(frameTime)
+				
+				while p.poll() is None:
+					pass
+					
+				booth.display_image(filename, flip_horizontally, flip_vertically, photo_border, photo_background, photo_keep_aspect_ratio)
+			except:
+				print "Fehler beim Bildaufnehmen"
 
 
-		time.sleep(seconds_show_picture_no_interrupt)
-		seconds_rest = seconds_show_picture_total - seconds_show_picture_no_interrupt
-		state = 3
+			time.sleep(seconds_show_picture_no_interrupt)
+			seconds_rest = seconds_show_picture_total - seconds_show_picture_no_interrupt
+			state = 3
 
-	elif (state == 3):	# stiller Countdown
-		if seconds_rest > 0:
-			time.sleep(1)
-			seconds_rest = seconds_rest - 1
-		else:
-			state = 0
+		elif (state == 3):	# stiller Countdown
+			if seconds_rest > 0:
+				time.sleep(1)
+				seconds_rest = seconds_rest - 1
+			else:
+				state = 0
 	
-		
+
 except KeyboardInterrupt:
-    print "Photobooth wird beendet ..."
-    #GPIO.cleanup()           # clean up GPIO on normal exit
+	print "Photobooth wird beendet ..."
+	#GPIO.cleanup()           # clean up GPIO on normal exit
 
 GPIO.cleanup()          # clean up GPIO on normal exit
 server.socket.close()	# close socket
